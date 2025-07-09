@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مولد مفاتيح دروسك</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 مولد مفاتيح دروسك</h1>
+
+    <label class="switch">
+      <input type="checkbox" id="lockToggle">
+      <span class="slider round"></span>
+    </label>
+    <span>تفعيل القفل</span>
+
+    <div class="buttons">
+      <button onclick="generateKey('2h')">مفتاح ساعتين</button>
+      <button onclick="generateKey('1mo')">مفتاح شهر</button>
+      <button onclick="generateKey('2026')">مفتاح حتى 10/7/2026</button>
+    </div>
+
+    <div class="output">
+      <h3>المفتاح:</h3>
+      <p id="keyOutput">---</p>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
