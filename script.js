@@ -1,3 +1,7 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+// إعدادات Firebase الجديدة
 const firebaseConfig = {
   apiKey: "AIzaSyDVLILSHrL0jb8-c1PaxQlg8LmIVblSq4U",
   authDomain: "drosak-2f9fe.firebaseapp.com",
@@ -8,38 +12,44 @@ const firebaseConfig = {
   appId: "1:23383414815:web:0dfd6a04f92b5e87099d2a"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// ✅ تفعيل / إلغاء القفل
+// ✅ زر التفعيل للقفل
 document.getElementById('lockToggle').addEventListener('change', function () {
   const isLocked = this.checked;
-  firebase.database().ref('appSettings/lockEnabled').set(isLocked);
+  set(ref(db, 'appSettings/lockEnabled'), isLocked)
+    .then(() => console.log("تم تعديل حالة القفل:", isLocked))
+    .catch(err => console.error("فشل في تعديل حالة القفل:", err));
 });
 
-// ✅ توليد مفاتيح
+// ✅ إنشاء المفاتيح بأنواعها
 function generateKey(type) {
   const key = Math.floor(1000000 + Math.random() * 9000000).toString();
-  let expiresAt;
+  let expiry = 0;
 
   if (type === '2h') {
-    expiresAt = Date.now() + 2 * 60 * 60 * 1000;
+    expiry = Date.now() + 2 * 60 * 60 * 1000; // ساعتين
   } else if (type === '1mo') {
-    expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
+    expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // شهر
   } else if (type === '2026') {
-    expiresAt = new Date('2026-07-10T23:59:59').getTime();
-  } else {
-    alert("❌ نوع المفتاح غير معروف.");
-    return;
+    expiry = new Date('2026-07-10T23:59:59').getTime(); // حتى 10/7/2026
   }
 
-  firebase.database().ref('validKeys/' + key).set({
-    expiresAt: expiresAt,
+  // إرسال المفتاح لقاعدة البيانات
+  set(ref(db, 'validKeys/' + key), {
+    expiresAt: expiry,
     usedBy: null
-  }).then(() => {
+  })
+  .then(() => {
     document.getElementById('keyOutput').textContent = key;
-  }).catch((error) => {
-    console.error("فشل في إنشاء المفتاح:", error);
-    document.getElementById('keyOutput').textContent = "❌ فشل في إنشاء المفتاح";
+    console.log("✅ تم إنشاء المفتاح:", key);
+  })
+  .catch(err => {
+    document.getElementById('keyOutput').textContent = "حدث خطأ!";
+    console.error("❌ فشل في إنشاء المفتاح:", err);
   });
 }
+
+// جعل الدالة متاحة في HTML
+window.generateKey = generateKey;
