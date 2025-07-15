@@ -1,7 +1,7 @@
 body {
   font-family: 'Cairo', sans-serif;
-  background: #F7E600;
-  color: black;
+  background: #0D1B2A;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,10 +10,10 @@ body {
 }
 .container {
   text-align: center;
-  background: white;
+  background: #1B263B;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 20px #aaa;
+  box-shadow: 0 0 20px #000;
 }
 .buttons button {
   margin: 10px;
@@ -28,7 +28,7 @@ body {
 .output {
   margin-top: 20px;
   font-size: 20px;
-  color: #333;
+  color: #A9D6E5;
 }
 .switch {
   position: relative;
