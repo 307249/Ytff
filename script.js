@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
+// تكوين Firebase
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
 };
@@ -8,13 +9,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// زر التفعيل/إلغاء التفعيل
-document.getElementById('lockToggle').addEventListener('change', function () {
-  const isLocked = this.checked;
-  set(ref(db, 'appSettings/lockEnabled'), isLocked);
-});
+// ✅ اقرأ حالة القفل من Firebase بعد تحميل الصفحة
+window.onload = function () {
+  const lockToggle = document.getElementById('lockToggle');
 
-// توليد المفتاح
+  // تحميل القيمة من قاعدة البيانات
+  onValue(ref(db, 'appSettings/lockEnabled'), (snapshot) => {
+    const isLocked = snapshot.val();
+    lockToggle.checked = isLocked === true;
+  });
+
+  // حفظ القيمة عند التغيير
+  lockToggle.addEventListener('change', function () {
+    const isLocked = this.checked;
+    set(ref(db, 'appSettings/lockEnabled'), isLocked);
+  });
+};
+
+// ✅ إنشاء مفتاح جديد
 function generateKey(type) {
   const key = Math.floor(1000000 + Math.random() * 9000000).toString();
   let expiry = 0;
@@ -35,8 +47,5 @@ function generateKey(type) {
   document.getElementById('keyOutput').textContent = key;
 }
 
-// ✅ تحديث حالة الزر عند فتح التطبيق
-onValue(ref(db, 'appSettings/lockEnabled'), (snapshot) => {
-  const isLocked = snapshot.val();
-  document.getElementById('lockToggle').checked = isLocked === true;
-});
+// خليه متاح في HTML
+window.generateKey = generateKey;
