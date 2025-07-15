@@ -1,12 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVLILSHrL0jb8-c1PaxQlg8LmIVblSq4U",
   authDomain: "drosak-2f9fe.firebaseapp.com",
   databaseURL: "https://drosak-2f9fe-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "drosak-2f9fe",
-  storageBucket: "drosak-2f9fe.firebasestorage.app",
+  storageBucket: "drosak-2f9fe.appspot.com",
   messagingSenderId: "23383414815",
   appId: "1:23383414815:web:0dfd6a04f92b5e87099d2a"
 };
