@@ -34,3 +34,9 @@ function generateKey(type) {
 
   document.getElementById('keyOutput').textContent = key;
 }
+
+// ✅ تحديث حالة الزر عند فتح التطبيق
+onValue(ref(db, 'appSettings/lockEnabled'), (snapshot) => {
+  const isLocked = snapshot.val();
+  document.getElementById('lockToggle').checked = isLocked === true;
+});
