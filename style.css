@@ -1,7 +1,7 @@
 body {
   font-family: 'Cairo', sans-serif;
-  background: #0D1B2A;
-  color: white;
+  background: #FFEB3B; /* اللون الأصفر */
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,10 +10,10 @@ body {
 }
 .container {
   text-align: center;
-  background: #1B263B;
+  background: #FFF176;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 20px #000;
+  box-shadow: 0 0 20px #888;
 }
 .buttons button {
   margin: 10px;
@@ -22,13 +22,13 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  background: #5FA8D3;
+  background: #FFC107;
   color: #000;
 }
 .output {
   margin-top: 20px;
   font-size: 20px;
-  color: #A9D6E5;
+  color: #000;
 }
 .switch {
   position: relative;
