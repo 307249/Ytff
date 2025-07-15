@@ -1,32 +1,34 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
-// تكوين Firebase
+// Firebase config
 const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ✅ اقرأ حالة القفل من Firebase بعد تحميل الصفحة
-window.onload = function () {
+// لما الصفحة تجهز بالكامل
+window.addEventListener("DOMContentLoaded", () => {
   const lockToggle = document.getElementById('lockToggle');
 
-  // تحميل القيمة من قاعدة البيانات
-  onValue(ref(db, 'appSettings/lockEnabled'), (snapshot) => {
+  // استرجاع قيمة القفل من قاعدة البيانات
+  const lockRef = ref(db, 'appSettings/lockEnabled');
+  onValue(lockRef, (snapshot) => {
     const isLocked = snapshot.val();
+    console.log("🔒 تم استرجاع قيمة القفل من Firebase:", isLocked);
     lockToggle.checked = isLocked === true;
   });
 
-  // حفظ القيمة عند التغيير
+  // تحديث قيمة القفل عند التغيير
   lockToggle.addEventListener('change', function () {
     const isLocked = this.checked;
-    set(ref(db, 'appSettings/lockEnabled'), isLocked);
+    set(lockRef, isLocked);
+    console.log("✅ تم تحديث قيمة القفل في Firebase:", isLocked);
   });
-};
+});
 
-// ✅ إنشاء مفتاح جديد
 function generateKey(type) {
   const key = Math.floor(1000000 + Math.random() * 9000000).toString();
   let expiry = 0;
@@ -47,5 +49,5 @@ function generateKey(type) {
   document.getElementById('keyOutput').textContent = key;
 }
 
-// خليه متاح في HTML
+// تصدير الوظيفة للزر
 window.generateKey = generateKey;
